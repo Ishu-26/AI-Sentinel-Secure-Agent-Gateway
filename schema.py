@@ -17,22 +17,3 @@ class ToolCall(BaseModel):
         if any(keyword in v.lower() for keyword in forbidden_keywords):
             raise ValueError("SECURITY ALERT: Unauthorized file path or keyword detected!")
         return v
-
-# --- TEST THE FIREWALL ---
-if __name__ == "__main__":
-    print("🛡️ Testing Permission Firewall...")
-    
-    # Example 1: A SAFE call
-    try:
-        safe_call = ToolCall(tool_name="read_pdf", arguments="report.pdf")
-        print(f"✅ Safe Tool Call Approved: {safe_call}")
-    except Exception as e:
-        print(f"❌ Error: {e}")
-
-    # Example 2: A MALICIOUS call (Trying to steal a .env file)
-    try:
-        print("\n🕵️ Testing a malicious file access attempt...")
-        bad_call = ToolCall(tool_name="read_pdf", arguments="secrets/.env")
-        print(bad_call)
-    except Exception as e:
-        print(f"🛑 FIREWALL BLOCKED ACTION: {e}")
